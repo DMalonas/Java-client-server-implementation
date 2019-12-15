@@ -35,7 +35,7 @@ public class Client
   
         // string to read message from input 
         String line = ""; 
-  
+        System.out.print("Enter input: ");
         // keep reading until "Over" is input 
         while (!line.equals("Over")) 
         { 
@@ -61,5 +61,9 @@ public class Client
         { 
             System.out.println(i); 
         } 
+    }
+    
+    public String toString() {
+    	return "Test";
     }
 } 
