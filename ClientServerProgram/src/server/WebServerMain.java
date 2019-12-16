@@ -11,44 +11,44 @@ public class WebServerMain {
     //initialize socket and input stream 
     private Socket          socket   = null; 
     private ServerSocket    server   = null; 
-    private DataInputStream in = null;
+    //private DataInputStream in = null;
+    InputStreamReader isr = null; //new InputStreamReader (conn.getInputStream ());
+    BufferedReader in = null; //new BufferedReader (isr);
+    PrintWriter out = null; //new PrintWriter (conn.getOutputStream (), true);
+
     // constructor with port 
     public WebServerMain (int port) {
 	    try
 	    { 
-	        server = new ServerSocket(port); 
+	        server = new ServerSocket(port);
+	        socket = server.accept(); 
+
+	        isr = new InputStreamReader (socket.getInputStream ());
+	        in = new BufferedReader (isr);
+	        out = new PrintWriter (socket.getOutputStream (), true);
+	        
 	        System.out.println("Server started"); 
 	
 	        System.out.println("Waiting for a client ..."); 
 	
-	        socket = server.accept(); 
+	        
 	        System.out.println("Client accepted"); 
 	
-	        // takes input from the client socket 
-	        in = new DataInputStream( 
-	            new BufferedInputStream(socket.getInputStream())); 
 	
 	        String line = ""; 
 	
 	        // reads message from client until "Over" is sent 
-	        while (!line.equals("Over")) 
-	        { 
-	            try
-	            { 
-	                line = in.readUTF(); 
-	                System.out.println(line); 
-	
-	            } 
-	            catch(IOException i) 
-	            { 
-	                System.out.println(i); 
-	            } 
-	        } 
+	        line = in.readLine ();
+	        out.println (line);
+
 	        System.out.println("Closing connection"); 
 	
-	        // close connection 
-	        socket.close(); 
-	        in.close(); 
+	        // close connection
+	        server.close();
+	        socket.close();     
+	        isr.close();
+	        in.close();
+	        out.close();
 	    } 
 	    catch(IOException i) 
 	    { 

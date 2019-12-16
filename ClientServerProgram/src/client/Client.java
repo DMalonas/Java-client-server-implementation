@@ -10,9 +10,17 @@ public class Client
 { 
     // initialize socket and input output streams 
     private Socket socket            = null; 
-    private DataInputStream  input   = null; 
-    private DataOutputStream out     = null; 
-  
+    //private DataInputStream  input   = null; 
+    //private DataOutputStream out     = null; 
+    
+//    private BufferedReader br = null;
+//    private BufferedInputStream bis = null;
+//    private BufferedOutputStream bos = null;
+ 
+    InputStreamReader isr = null;//new InputStreamReader(socket.getInputStream ());
+    BufferedReader in = null;//new BufferedReader (isr);
+    PrintWriter out = null;//new PrintWriter (socket.getOutputStream (), true);
+
     // constructor to put ip address and port 
     public Client(String address, int port) 
     { 
@@ -21,12 +29,15 @@ public class Client
         { 
             socket = new Socket(address, port); 
             System.out.println("Connected"); 
-  
+            
             // takes input from terminal 
-            input  = new DataInputStream(System.in); 
-  
+            //input  = new DataInputStream(System.in); 
+            isr = new InputStreamReader(socket.getInputStream ());
+            in = new BufferedReader (isr);
             // sends output to the socket 
-            out    = new DataOutputStream(socket.getOutputStream()); 
+            //out    = new DataOutputStream(socket.getOutputStream());
+            out = new PrintWriter (socket.getOutputStream (), true);
+            
         } 
         catch(UnknownHostException u) 
         { 
@@ -37,27 +48,18 @@ public class Client
             System.out.println(i); 
         } 
   
-        // string to read message from input 
-        String line = ""; 
-        System.out.print("Enter input: ");
-        // keep reading until "Over" is input 
-        while (!line.equals("Over")) 
-        { 
-            try
-            { 
-                line = input.readLine(); 
-                out.writeUTF(line); 
-            } 
-            catch(IOException i) 
-            { 
-                System.out.println(i); 
-            } 
-        } 
+        out.println ("Ping"); 
+        try {
+			String rec = in.readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}        
   
         // close the connection 
         try
         { 
-            input.close(); 
+          //input.close(); 
             out.close(); 
             socket.close(); 
         } 
