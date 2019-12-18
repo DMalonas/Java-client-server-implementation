@@ -1,2 +1,2 @@
-# Java-server-implementation
-Java server that accepts HTTP requests
+# Client-server program
+A simple client-server Java program implemented with Sockets.
